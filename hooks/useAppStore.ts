@@ -268,9 +268,9 @@ export const useAppStore = (): Omit<AppContextType, keyof ReturnType<typeof useD
   });
 
   const [cameraControlsEnabled, setCameraControlsEnabled] = useState<boolean>(false);
-  const [viewMode, setViewModeState] = useState<ViewMode>('chase');
-  const [viewModeTransition, setViewModeTransition] = useState(1.0); // 0 = cockpit, 1 = chase
-  const viewModeTransitionRef = useRef({ current: 1.0, target: 1.0 });
+  const [viewMode, setViewModeState] = useState<ViewMode>('cockpit');
+  const [viewModeTransition, setViewModeTransition] = useState(0.0); // 0 = cockpit, 1 = chase
+  const viewModeTransitionRef = useRef({ current: 0.0, target: 0.0 });
 
   const keysPressed = useRef(new Set<string>());
   const [pressedKeys, setPressedKeys] = useState(new Set<string>());
@@ -837,7 +837,7 @@ export const useAppStore = (): Omit<AppContextType, keyof ReturnType<typeof useD
     
     // Load new settings, defaulting if not present in old save files
     setCanvasSize(sessionState.canvasSize ?? defaultCanvasSize);
-    setViewMode(sessionState.viewMode ?? 'chase');
+    setViewMode(sessionState.viewMode ?? 'cockpit');
     setIsHdEnabled(sessionState.isHdEnabled ?? false);
     setIsFpsEnabled(sessionState.isFpsEnabled ?? false);
     setIsHudEnabled(sessionState.isHudEnabled ?? true);
@@ -1190,9 +1190,9 @@ export const useAppStore = (): Omit<AppContextType, keyof ReturnType<typeof useD
         const rightX = Math.cos(y);
         const rightZ = -Math.sin(y);
 
-        const tVX = (dirX * fwd * (controls.forwardVelocity??1) + rightX * str * (controls.strafeVelocity??1)) * spd;
-        const tVY = (dirY * fwd * (controls.forwardVelocity??1) + asc * (controls.ascendVelocity??1)) * spd;
-        const tVZ = (dirZ * fwd * (controls.forwardVelocity??1) + rightZ * str * (controls.strafeVelocity??1)) * spd;
+        const tVX = (dirX * fwd * (controls.forwardVelocity??0.3) + rightX * str * (controls.strafeVelocity??0.3)) * spd;
+        const tVY = (dirY * fwd * (controls.forwardVelocity??0.3) + asc * (controls.ascendVelocity??0.3)) * spd;
+        const tVZ = (dirZ * fwd * (controls.forwardVelocity??0.3) + rightZ * str * (controls.strafeVelocity??0.3)) * spd;
 
         cameraVelocityRef.current[0] += (tVX - cameraVelocityRef.current[0]) * 0.1;
         cameraVelocityRef.current[1] += (tVY - cameraVelocityRef.current[1]) * 0.1;

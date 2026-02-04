@@ -296,7 +296,7 @@
     ]
   },
   "canvasSize": "100%",
-  "viewMode": "chase",
+  "viewMode": "cockpit",
   "isHdEnabled": false,
   "isFpsEnabled": false,
   "isHudEnabled": true,
